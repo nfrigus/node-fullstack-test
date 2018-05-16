@@ -1,7 +1,10 @@
-const router = module.exports = require('express').Router();
+const path = require('path');
+const express = require('express');
+const router = module.exports = express.Router();
 
-router.get('/', async (req, res) => res.send('hello'))
+router.get('/', (req, res) => res.sendFile(path.resolve('./public/index.html')));
 router.use('/queue', require('./queue'));
+router.use(express.static('public'));
 
 router.use((err, req, res, next) => {
   const response = err.code ? err : {

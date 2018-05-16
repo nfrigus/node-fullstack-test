@@ -1,0 +1,5 @@
+<div ng-model-options="{ getterSetter: true }">
+  <select ng-model="$ctrl.day" ng-options="i as i for i in $ctrl.days"></select>
+  <select ng-model="$ctrl.month" ng-options="i.value as i.title for i in $ctrl.months"></select>
+  <input type="number" step="1" min="1970" max="9999" ng-model="$ctrl.year" />
+</div>

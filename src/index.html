@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Angular</title>
+</head>
+<body>
+<div ng-app="app" ng-controller="AppController">
+  <h3>Date component</h3>
+  <date-input ng-model="timestamp"></date-input>
+  <hr />
+  <h3>Outside of date component</h3>
+  <span>Timestamp: {{ timestamp }}</span>
+  <button ng-click="reset()">reset</button>
+  <hr />
+</div>
+
+<script src="/bundle.js"></script>
+</body>
+</html>

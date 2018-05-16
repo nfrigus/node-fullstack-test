@@ -62,3 +62,8 @@ Now regarding my assumptions - it was that processing request submitted near the
 The first submitted item get processed first which is pretty straightforward. But the second pdf according to example should be processed only after five html-jobs that are further in the queue. That ended me with following queue conditions:
 * item in queue skips forward other items that require less time to process than he is but not more items that have summary processing time more than the item processing time
 * item cannot skip forward in queue another item with the same processing time
+
+> Implement a simple directive (or component) in Angular 1.x with a template composed by two dropdowns and a text input, that requires with `ng-model` and stores the model value as a timestamp (`Date.prototype.getTime()`) but displays it as the day on the first dropdown (ex. '21'), the month abbreviated on second (ex, 'Aug') and the year on on the text input (ex. '2017'). The dropdowns and input are editable, and changes must reflect on model and vice-versa. Add test coverage as you see fit.
+
+The builded solution is served at the root path by server started with `npm start`.
+Sources can be found within repository files.
