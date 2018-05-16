@@ -1,0 +1,26 @@
+{
+  "name": "reedsy-challenge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Solution for Readsy's Node.js Fullstack Engineer Challenge",
+  "license": "UNLICENCED",
+  "author": "shestakovsemen@gmail.com",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/api/server",
+    "test": "mocha -r should \"src/**/*.spec.js\""
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^1.30.0",
+    "express": "^4.16.3",
+    "express-async-patch": "^0.2.0",
+    "js-yaml": "^3.11.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1",
+    "nodemon": "^1.17.4",
+    "should": "^13.2.1",
+    "supertest": "^3.1.0"
+  }
+}
