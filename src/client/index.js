@@ -1,8 +1,9 @@
 import angular from 'angular';
+import Operation from './Operation';
 
 
 angular.module('app', [])
-  .controller('AppController', ['$scope', AppController])
+  .controller('AppController', ['$scope', 'operation', AppController])
   .component('dateInput', {
     templateUrl: 'templates/date-input.html',
     controller: DateInputController,
@@ -10,10 +11,13 @@ angular.module('app', [])
       ngModel: '=',
     }
   })
+  .factory('operation', function() {
+    return new Operation([]);
+  });
 
-function AppController($scope) {
+function AppController($scope , operation) {
   $scope.timestamp = Date.now();
-  $scope.reset = () => { $scope.timestamp = Date.now() }
+  $scope.reset = () => { $scope.timestamp = Date.now() };
 }
 
 
@@ -67,7 +71,6 @@ function DateInputController() {
   this.month = (function (value) {
     const date = new Date(this.ngModel);
     value = +value;
-
     if (arguments.length && 0 <= value && value <= 11) {
       date.setMonth(value);
       this.ngModel = date.getTime();

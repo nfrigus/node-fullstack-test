@@ -35197,6 +35197,84 @@ module.exports = angular;
 
 /***/ }),
 
+/***/ "./src/client/Operation.js":
+/*!*********************************!*\
+  !*** ./src/client/Operation.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const allowedOperations = ['move', 'insert', 'delete'];
+
+class Operation {
+  constructor() {}
+
+  setOperation(op) {
+    this.operations = op;
+  }
+
+  static compose(op1, op2) {
+    return op1.concat(op2);
+  }
+
+  compose(op) {
+    const offset = this.operations.filter(o=>o.move).reduce((a,n) => a + n.move, 0);
+    op[0].move = op[0].move <= offset ? 0 : op[0].move - offset;
+    this.operations = this.operations.concat(op);
+
+    return this.operations;
+  }
+
+  get() {
+    return this.operations.toString();
+  }
+
+  move(string, pos, to) {
+    if (string.length - pos <= to)
+      return string.length;
+
+    return pos + to;
+  }
+
+  insert(string, pos, str) {
+    return string.slice(0, pos) + str + string.slice(string.slice(0, pos).length);
+  }
+
+  delete(string, pos, del) {
+    return string.slice(0, pos) + string.slice(string.slice(0, pos).length + del);
+  }
+
+  apply(string) {
+    let pos = 0;
+
+    this.operations.forEach(op=>{
+      const key = Object.keys(op)[0];
+
+      switch (key) {
+        case 'move':
+          pos = this.move(string, pos, op[key]);
+          break;
+        case 'insert':
+          string = this.insert(string, pos, op[key]);
+          break;
+        case 'delete':
+          string = this.delete(string, pos, op[key]);
+          break;
+      }
+    });
+
+
+    return string;
+  };
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Operation);
+
+/***/ }),
+
 /***/ "./src/client/index.js":
 /*!*****************************!*\
   !*** ./src/client/index.js ***!
@@ -35208,11 +35286,13 @@ module.exports = angular;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! angular */ "./node_modules/angular/index.js");
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Operation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Operation */ "./src/client/Operation.js");
+
 
 
 
 angular__WEBPACK_IMPORTED_MODULE_0___default.a.module('app', [])
-  .controller('AppController', ['$scope', AppController])
+  .controller('AppController', ['$scope', 'operation', AppController])
   .component('dateInput', {
     templateUrl: 'templates/date-input.html',
     controller: DateInputController,
@@ -35220,10 +35300,13 @@ angular__WEBPACK_IMPORTED_MODULE_0___default.a.module('app', [])
       ngModel: '=',
     }
   })
+  .factory('operation', function() {
+    return new _Operation__WEBPACK_IMPORTED_MODULE_1__["default"]([]);
+  });
 
-function AppController($scope) {
+function AppController($scope , operation) {
   $scope.timestamp = Date.now();
-  $scope.reset = () => { $scope.timestamp = Date.now() }
+  $scope.reset = () => { $scope.timestamp = Date.now() };
 }
 
 
@@ -35277,7 +35360,6 @@ function DateInputController() {
   this.month = (function (value) {
     const date = new Date(this.ngModel);
     value = +value;
-
     if (arguments.length && 0 <= value && value <= 11) {
       date.setMonth(value);
       this.ngModel = date.getTime();
